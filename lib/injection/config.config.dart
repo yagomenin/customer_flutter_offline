@@ -11,6 +11,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:customer_flutter_offline/core/database/database_helper.dart'
     as _i954;
+import 'package:customer_flutter_offline/features/data/datasource/local_datasource.dart'
+    as _i573;
 import 'package:customer_flutter_offline/features/splash/presentation/cubit/splash_cubit.dart'
     as _i736;
 import 'package:customer_flutter_offline/routing/app_navigator.dart' as _i793;
@@ -27,6 +29,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i736.SplashCubit>(() => _i736.SplashCubit());
     gh.lazySingleton<_i954.DatabaseHelper>(() => _i954.DatabaseHelper());
     gh.lazySingleton<_i793.AppNavigator>(() => _i793.AppNavigator());
+    gh.factory<_i573.LocalDatasource>(
+      () => _i573.LocalDatasourceImpl(gh<_i954.DatabaseHelper>()),
+    );
     return this;
   }
 }
