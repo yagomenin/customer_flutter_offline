@@ -11,6 +11,18 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:customer_flutter_offline/core/database/database_helper.dart'
     as _i954;
+import 'package:customer_flutter_offline/features/customer/data/repositories/customer_repository_impl.dart'
+    as _i534;
+import 'package:customer_flutter_offline/features/customer/domain/repositories/customer_repository.dart'
+    as _i101;
+import 'package:customer_flutter_offline/features/customer/domain/usecases/delete_customer_use_case.dart'
+    as _i774;
+import 'package:customer_flutter_offline/features/customer/domain/usecases/get_customer_use_case.dart'
+    as _i985;
+import 'package:customer_flutter_offline/features/customer/domain/usecases/save_customer_use_case.dart'
+    as _i324;
+import 'package:customer_flutter_offline/features/customer/domain/usecases/update_customer_use_case.dart'
+    as _i667;
 import 'package:customer_flutter_offline/features/data/datasource/local_datasource.dart'
     as _i573;
 import 'package:customer_flutter_offline/features/splash/presentation/cubit/splash_cubit.dart'
@@ -31,6 +43,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i793.AppNavigator>(() => _i793.AppNavigator());
     gh.factory<_i573.LocalDatasource>(
       () => _i573.LocalDatasourceImpl(gh<_i954.DatabaseHelper>()),
+    );
+    gh.factory<_i101.CustomerRepository>(
+      () => _i534.CustomerRepositoryImpl(gh<_i573.LocalDatasource>()),
+    );
+    gh.lazySingleton<_i774.DeleteCustomerUseCase>(
+      () => _i774.DeleteCustomerUseCase(gh<_i101.CustomerRepository>()),
+    );
+    gh.lazySingleton<_i985.GetCustomerUseCase>(
+      () => _i985.GetCustomerUseCase(gh<_i101.CustomerRepository>()),
+    );
+    gh.lazySingleton<_i324.SaveCustomerUseCase>(
+      () => _i324.SaveCustomerUseCase(gh<_i101.CustomerRepository>()),
+    );
+    gh.lazySingleton<_i667.UpdateCustomerUseCase>(
+      () => _i667.UpdateCustomerUseCase(gh<_i101.CustomerRepository>()),
     );
     return this;
   }

@@ -1,5 +1,5 @@
 import 'package:customer_flutter_offline/core/widgets/custom_navigator_error_page.dart';
-import 'package:customer_flutter_offline/features/customer/presentation/customer_page.dart';
+import 'package:customer_flutter_offline/features/customer/presentation/widgets/customer_page.dart';
 import 'package:customer_flutter_offline/features/splash/presentation/widgets/splash_page.dart';
 import 'package:customer_flutter_offline/routing/app_routes.dart';
 import 'package:flutter/material.dart';
