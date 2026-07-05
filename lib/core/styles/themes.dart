@@ -9,6 +9,6 @@ ColorScheme lightColorScheme = ColorScheme(
   onSecondary: ColorsApp.textColor,
   error: ColorsApp.errorColor,
   onError: ColorsApp.secondaryColor,
-  surface: ColorsApp.surface,
+  surface: ColorsApp.secondaryColor,
   onSurface: Color.fromARGB(255, 46, 34, 34),
 );

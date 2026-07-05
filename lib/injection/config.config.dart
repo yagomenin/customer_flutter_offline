@@ -23,6 +23,8 @@ import 'package:customer_flutter_offline/features/customer/domain/usecases/save_
     as _i324;
 import 'package:customer_flutter_offline/features/customer/domain/usecases/update_customer_use_case.dart'
     as _i667;
+import 'package:customer_flutter_offline/features/customer/presentation/cubit/customer_cubit.dart'
+    as _i813;
 import 'package:customer_flutter_offline/features/data/datasource/local_datasource.dart'
     as _i573;
 import 'package:customer_flutter_offline/features/splash/presentation/cubit/splash_cubit.dart'
@@ -58,6 +60,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i667.UpdateCustomerUseCase>(
       () => _i667.UpdateCustomerUseCase(gh<_i101.CustomerRepository>()),
+    );
+    gh.factory<_i813.CustomerCubit>(
+      () => _i813.CustomerCubit(gh<_i985.GetCustomerUseCase>()),
     );
     return this;
   }
