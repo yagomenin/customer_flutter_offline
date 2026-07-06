@@ -1,3 +1,4 @@
+import 'package:customer_flutter_offline/core/styles/colors_app.dart';
 import 'package:customer_flutter_offline/core/styles/space.dart';
 import 'package:customer_flutter_offline/core/widgets/custom_app_bar.dart';
 import 'package:customer_flutter_offline/core/widgets/custom_bottom_bar.dart';
@@ -40,7 +41,46 @@ class _CustomerPage extends State<CustomerPage> {
           preferredSize: Size(MediaQuery.of(context).size.width, Space.xl),
           child: CustomAppBar(title: CustomerString.customer),
         ),
-        body: BlocBuilder<CustomerCubit, CustomerState>(
+        body: BlocConsumer<CustomerCubit, CustomerState>(
+          listener: (context, state) {
+            if (state is CustomerSaveSuccessState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: ColorsApp.successColor,
+                  behavior: SnackBarBehavior.floating,
+                  duration: const Duration(seconds: 3),
+                ),
+              );
+            } else if (state is CustomerDeleteSuccessState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: ColorsApp.successColor,
+                  behavior: SnackBarBehavior.floating,
+                  duration: const Duration(seconds: 3),
+                ),
+              );
+            } else if (state is CustomerSaveErrorState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: ColorsApp.errorColor,
+                  behavior: SnackBarBehavior.floating,
+                  duration: const Duration(seconds: 3),
+                ),
+              );
+            } else if (state is CustomerDeleteErrorState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: ColorsApp.errorColor,
+                  behavior: SnackBarBehavior.floating,
+                  duration: const Duration(seconds: 3),
+                ),
+              );
+            }
+          },
           builder: (BuildContext context, Object state) {
             switch (state) {
               case CustomerInitialState state:

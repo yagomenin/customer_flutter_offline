@@ -34,7 +34,6 @@ class LocalDatasourceImpl implements LocalDatasource {
       data.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    throw UnimplementedError();
   }
 
   @override

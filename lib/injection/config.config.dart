@@ -62,7 +62,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i667.UpdateCustomerUseCase(gh<_i101.CustomerRepository>()),
     );
     gh.factory<_i813.CustomerCubit>(
-      () => _i813.CustomerCubit(gh<_i985.GetCustomerUseCase>()),
+      () => _i813.CustomerCubit(
+        gh<_i985.GetCustomerUseCase>(),
+        gh<_i324.SaveCustomerUseCase>(),
+        gh<_i667.UpdateCustomerUseCase>(),
+        gh<_i774.DeleteCustomerUseCase>(),
+      ),
     );
     return this;
   }

@@ -4,6 +4,7 @@ import 'package:customer_flutter_offline/core/widgets/custom_button.dart';
 import 'package:customer_flutter_offline/core/widgets/custom_form_field.dart';
 import 'package:customer_flutter_offline/core/widgets/custom_label_text_form.dart';
 import 'package:customer_flutter_offline/features/customer/customer_string.dart';
+import 'package:customer_flutter_offline/features/customer/domain/validations/customer_validator.dart';
 import 'package:customer_flutter_offline/features/customer/presentation/cubit/customer_cubit.dart';
 import 'package:customer_flutter_offline/features/customer/presentation/cubit/customer_state.dart';
 import 'package:customer_flutter_offline/features/customer/presentation/widgets/navigation/customer_form_arguments.dart';
@@ -30,6 +31,12 @@ class _CustomerFormPage extends State<CustomerFormPage> {
   @override
   void initState() {
     cubit = getIt.get<CustomerCubit>();
+    cubit.loadForm(customer: widget.arguments.customer);
+    if (widget.arguments.customer != null) {
+      _nameController.text = widget.arguments.customer!.name;
+      _phoneController.text = widget.arguments.customer!.cellphone;
+      _emailController.text = widget.arguments.customer!.email ?? '';
+    }
     super.initState();
   }
 
@@ -46,54 +53,54 @@ class _CustomerFormPage extends State<CustomerFormPage> {
           padding: EdgeInsets.all(Space.md),
           child: Form(
             key: _formState,
-            child: BlocListener<CustomerCubit, CustomerState>(
-              listener: (context, state) {
-                if (state is CustomerFortState) {
-                  if (state.customer != null) {
-                    _nameController.text = state.customer!.name;
-                    _phoneController.text = state.customer!.cellphone;
-                    _emailController.text = state.customer!.email ?? '';
-                  }
-                }
-              },
-              child: Column(
-                crossAxisAlignment: .start,
-                children: [
-                  CustomLabelTextForm(label: CustomerString.name),
-                  const SizedBox(height: Space.xs),
-                  CustomFormField(
-                    hintText: CustomerString.typeCustomerName,
-                    onChanged: (value) {},
-                    validator: (value) => null,
-                    controller: _nameController,
+            child: Column(
+              crossAxisAlignment: .start,
+              children: [
+                CustomLabelTextForm(label: CustomerString.name),
+                const SizedBox(height: Space.xs),
+                CustomFormField(
+                  hintText: CustomerString.typeCustomerName,
+                  onChanged: (value) {},
+                  validator: CustomerValidator.validateName,
+                  controller: _nameController,
+                ),
+                const SizedBox(height: Space.md),
+                CustomLabelTextForm(label: CustomerString.cellphone),
+                const SizedBox(height: Space.xs),
+                CustomFormField(
+                  hintText: CustomerString.typeCustomerPhone,
+                  onChanged: (value) {},
+                  validator: CustomerValidator.validatePhone,
+                  controller: _phoneController,
+                ),
+                const SizedBox(height: Space.md),
+                CustomLabelTextForm(label: CustomerString.email),
+                const SizedBox(height: Space.xs),
+                CustomFormField(
+                  hintText: CustomerString.typeCustomerEmail,
+                  onChanged: (value) {},
+                  validator: CustomerValidator.validateEmail,
+                  controller: _emailController,
+                ),
+                const SizedBox(height: Space.md),
+                Center(
+                  child: CustomButton(
+                    onPressed: () {
+                      if (_formState.currentState!.validate() &&
+                          cubit.state is CustomerFormState) {
+                        widget.arguments.cubit.saveCustomer(
+                          state: cubit.state as CustomerFormState,
+                          name: _nameController.text,
+                          phone: _phoneController.text,
+                          email: _emailController.text,
+                        );
+                        Navigator.pop(context);
+                      }
+                    },
+                    textButton: CustomerString.save,
                   ),
-                  const SizedBox(height: Space.md),
-                  CustomLabelTextForm(label: CustomerString.cellphone),
-                  const SizedBox(height: Space.xs),
-                  CustomFormField(
-                    hintText: CustomerString.typeCustomerPhone,
-                    onChanged: (value) {},
-                    validator: (value) => null,
-                    controller: _phoneController,
-                  ),
-                  const SizedBox(height: Space.md),
-                  CustomLabelTextForm(label: CustomerString.email),
-                  const SizedBox(height: Space.xs),
-                  CustomFormField(
-                    hintText: CustomerString.typeCustomerEmail,
-                    onChanged: (value) {},
-                    validator: (value) => null,
-                    controller: _emailController,
-                  ),
-                  const SizedBox(height: Space.md),
-                  Center(
-                    child: CustomButton(
-                      onPressed: () {},
-                      textButton: CustomerString.save,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

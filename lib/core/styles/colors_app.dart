@@ -9,6 +9,7 @@ class ColorsApp {
   static const Color errorColor = Colors.red;
   static const Color primaryColor = Color.fromARGB(255, 116, 24, 18);
   static const Color lowGrey = Color.fromARGB(255, 207, 207, 207);
+  static const Color successColor = Color.fromARGB(255, 58, 145, 47);
 
   static Color generateRandomColor(int seed) {
     final rand = Random(seed);

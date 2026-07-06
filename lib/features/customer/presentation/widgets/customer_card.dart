@@ -4,12 +4,16 @@ import 'package:customer_flutter_offline/core/utils/date_utils.dart';
 import 'package:customer_flutter_offline/core/widgets/custom_button.dart';
 import 'package:customer_flutter_offline/features/customer/customer_string.dart';
 import 'package:customer_flutter_offline/features/customer/data/model/customer.dart';
+import 'package:customer_flutter_offline/features/customer/presentation/cubit/customer_cubit.dart';
+import 'package:customer_flutter_offline/features/customer/presentation/widgets/navigation/customer_form_arguments.dart';
+import 'package:customer_flutter_offline/routing/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class CustomerCard extends StatelessWidget {
-  const CustomerCard({required this.customer, super.key});
+  const CustomerCard({required this.customer, required this.cubit, super.key});
 
   final Customer customer;
+  final CustomerCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +59,25 @@ class CustomerCard extends StatelessWidget {
           Divider(color: ColorsApp.lowGrey),
           Row(
             children: [
-              CustomButton(onPressed: () {}, textButton: CustomerString.edit),
-              CustomButton(onPressed: () {}, textButton: CustomerString.delete),
+              CustomButton(
+                onPressed: () {
+                  context.navigateTo(
+                    context: context,
+                    routeName: AppRoutes.customerForm,
+                    arguments: CustomerFormArguments(
+                      cubit: cubit,
+                      customer: customer,
+                    ),
+                  );
+                },
+                textButton: CustomerString.edit,
+              ),
+              CustomButton(
+                onPressed: () {
+                  cubit.deleteCustomer(id: customer.id);
+                },
+                textButton: CustomerString.delete,
+              ),
             ],
           ),
         ],
