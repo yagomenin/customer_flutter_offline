@@ -1,5 +1,6 @@
 import 'package:customer_flutter_offline/core/styles/space.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomFormField extends StatelessWidget {
   const CustomFormField({
@@ -7,6 +8,7 @@ class CustomFormField extends StatelessWidget {
     required this.onChanged,
     required this.validator,
     required this.controller,
+    this.inputFormatters,
     super.key,
   });
 
@@ -14,6 +16,7 @@ class CustomFormField extends StatelessWidget {
   final Function(String? value) onChanged;
   final String? Function(String? value) validator;
   final TextEditingController controller;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +30,7 @@ class CustomFormField extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(Space.md - 2)),
         ),
       ),
+      inputFormatters: inputFormatters,
     );
   }
 }
