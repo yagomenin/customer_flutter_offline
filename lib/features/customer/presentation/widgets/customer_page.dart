@@ -8,7 +8,9 @@ import 'package:customer_flutter_offline/features/customer/presentation/cubit/cu
 import 'package:customer_flutter_offline/features/customer/presentation/cubit/customer_state.dart';
 import 'package:customer_flutter_offline/core/widgets/custom_empty_page.dart';
 import 'package:customer_flutter_offline/features/customer/presentation/widgets/customer_list.dart';
+import 'package:customer_flutter_offline/features/customer/presentation/widgets/navigation/customer_form_arguments.dart';
 import 'package:customer_flutter_offline/injection/config.dart';
+import 'package:customer_flutter_offline/routing/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -82,7 +84,15 @@ class _CustomerPage extends State<CustomerPage> {
               case CustomerLoadingState _:
                 return SizedBox.shrink();
               default:
-                return CustomFloatingActionButton(onPressed: () {});
+                return CustomFloatingActionButton(
+                  onPressed: () {
+                    context.navigateTo(
+                      context: context,
+                      routeName: AppRoutes.customerForm,
+                      arguments: CustomerFormArguments(cubit: cubit),
+                    );
+                  },
+                );
             }
           },
         ),
