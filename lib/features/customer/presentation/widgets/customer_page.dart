@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:customer_flutter_offline/core/styles/colors_app.dart';
 import 'package:customer_flutter_offline/core/styles/space.dart';
 import 'package:customer_flutter_offline/core/widgets/custom_app_bar.dart';
@@ -24,12 +26,34 @@ class CustomerPage extends StatefulWidget {
 
 class _CustomerPage extends State<CustomerPage> {
   late final CustomerCubit cubit;
+  final TextEditingController _searchController = TextEditingController();
+  Timer? _debounce;
+
+  void _showSnackBar({required String message, required bool isError}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError
+            ? ColorsApp.errorColor
+            : ColorsApp.successColor,
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
 
   @override
   initState() {
     cubit = getIt.get<CustomerCubit>();
     cubit.fetchCustomer();
     super.initState();
+  }
+
+  @override
+  dispose() {
+    _searchController.dispose();
+    _debounce?.cancel();
+    super.dispose();
   }
 
   @override
@@ -44,41 +68,13 @@ class _CustomerPage extends State<CustomerPage> {
         body: BlocConsumer<CustomerCubit, CustomerState>(
           listener: (context, state) {
             if (state is CustomerSaveSuccessState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: ColorsApp.successColor,
-                  behavior: SnackBarBehavior.floating,
-                  duration: const Duration(seconds: 3),
-                ),
-              );
+              _showSnackBar(message: state.message, isError: false);
             } else if (state is CustomerDeleteSuccessState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: ColorsApp.successColor,
-                  behavior: SnackBarBehavior.floating,
-                  duration: const Duration(seconds: 3),
-                ),
-              );
+              _showSnackBar(message: state.message, isError: false);
             } else if (state is CustomerSaveErrorState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: ColorsApp.errorColor,
-                  behavior: SnackBarBehavior.floating,
-                  duration: const Duration(seconds: 3),
-                ),
-              );
+              _showSnackBar(message: state.message, isError: true);
             } else if (state is CustomerDeleteErrorState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: ColorsApp.errorColor,
-                  behavior: SnackBarBehavior.floating,
-                  duration: const Duration(seconds: 3),
-                ),
-              );
+              _showSnackBar(message: state.message, isError: true);
             }
           },
           builder: (BuildContext context, Object state) {
@@ -93,16 +89,24 @@ class _CustomerPage extends State<CustomerPage> {
                   child: Column(
                     children: [
                       TextField(
+                        controller: _searchController,
                         decoration: InputDecoration(
                           hintText: CustomerString.searchByNameCpf,
-
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(Space.md - 2),
                             ),
                           ),
                         ),
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          _debounce?.cancel();
+                          _debounce = Timer(
+                            const Duration(milliseconds: 500),
+                            () {
+                              cubit.searchCustomer(query: value);
+                            },
+                          );
+                        },
                       ),
                       const SizedBox(height: Space.md),
                       CustomerList(customers: state.customers),

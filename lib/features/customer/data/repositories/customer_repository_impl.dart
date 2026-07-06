@@ -12,10 +12,14 @@ class CustomerRepositoryImpl extends CustomerRepository {
   final LocalDatasource _localDatasource;
 
   @override
-  Future<Either<Failure, List<Customer>>> getAllCustomer() async {
+  Future<Either<Failure, List<Customer>>> getAllCustomer({
+    String? query,
+  }) async {
     try {
       final List<dynamic> result = await _localDatasource.getAll(
         tableName: Customer.tableName,
+        where: query != null ? 'name LIKE ?' : null,
+        whereArgs: query != null ? ['%$query%'] : null,
       );
 
       final List<Customer> customers = result
