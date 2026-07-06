@@ -52,9 +52,7 @@ class CustomerCubit extends Cubit<CustomerState> {
         emit(CustomerDeleteErrorState(message: failure.message));
       },
       (_) {
-        emit(
-          CustomerDeleteSuccessState(message: 'Cliente deletado com sucesso'),
-        );
+        emit(CustomerDeleteSuccessState(message: CustomerString.deleteSuccess));
       },
     );
 
@@ -89,6 +87,9 @@ class CustomerCubit extends Cubit<CustomerState> {
       writeAt: DateTime.now(),
     );
     final Either<Failure, Unit> result;
+    final String message = state.isEditing
+        ? CustomerString.editSuccess
+        : CustomerString.saveSuccess;
     if (!state.isEditing) {
       result = await _saveCustomerUseCase.saveCustomer(
         customer: customerToSave,
@@ -104,10 +105,26 @@ class CustomerCubit extends Cubit<CustomerState> {
         emit(CustomerSaveErrorState(message: failure.message));
       },
       (_) {
-        emit(CustomerSaveSuccessState(message: 'Cliente salvo com sucesso'));
+        emit(CustomerSaveSuccessState(message: message));
       },
     );
 
     await fetchCustomer();
+  }
+
+  Future<void> searchCustomer({required String query}) async {
+    emit(CustomerLoadingState());
+    final result = await _getCustomerUseCase.searchCustomersByName(
+      query: query,
+    );
+
+    await result.fold(
+      (failure) {
+        emit(CustomerErrorState(message: CustomerString.errorGetCustomers));
+      },
+      (customers) {
+        emit(CustomerSuccessState(customers: customers));
+      },
+    );
   }
 }

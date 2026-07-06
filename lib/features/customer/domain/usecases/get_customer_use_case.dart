@@ -15,4 +15,12 @@ class GetCustomerUseCase {
 
     return result;
   }
+
+  Future<Either<Failure, List<Customer>>> searchCustomersByName({
+    required String query,
+  }) async {
+    final result = await _repository.getAllCustomer(query: query);
+
+    return result;
+  }
 }

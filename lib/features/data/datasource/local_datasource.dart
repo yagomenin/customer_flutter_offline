@@ -3,7 +3,11 @@ import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
 
 abstract class LocalDatasource {
-  Future<List<dynamic>> getAll({required String tableName});
+  Future<List<dynamic>> getAll({
+    required String tableName,
+    String? where,
+    List<dynamic>? whereArgs,
+  });
   Future<void> insert({required String tableName, required dynamic data});
   Future<void> updateById({
     required String tableName,
@@ -20,9 +24,17 @@ class LocalDatasourceImpl implements LocalDatasource {
   final DatabaseHelper _dbHelper;
 
   @override
-  Future<List<dynamic>> getAll({required String tableName}) async {
+  Future<List<dynamic>> getAll({
+    required String tableName,
+    String? where,
+    List<dynamic>? whereArgs,
+  }) async {
     final db = await _dbHelper.database;
-    final result = await db.query(tableName);
+    final result = await db.query(
+      tableName,
+      where: where,
+      whereArgs: whereArgs,
+    );
     return result as List;
   }
 

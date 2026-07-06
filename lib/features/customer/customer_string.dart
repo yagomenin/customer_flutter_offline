@@ -16,4 +16,7 @@ class CustomerString {
   static const String name = 'Nome*';
   static const String cellphone = 'Celular*';
   static const String email = 'Email';
+  static const String editSuccess = 'Cliente atualizado com sucesso';
+  static const String saveSuccess = 'Cliente salvo com sucesso';
+  static const String deleteSuccess = 'Cliente deletado com sucesso';
 }

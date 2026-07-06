@@ -41,6 +41,14 @@ class _CustomerFormPage extends State<CustomerFormPage> {
   }
 
   @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => cubit,
