@@ -6,16 +6,16 @@ class Customer extends Equatable {
         ? map['id']
         : int.tryParse(map['id']?.toString() ?? '') ?? 0,
     name: map['name']?.toString() ?? '',
-    cellphone: map['cellphone']?.toString() ?? '',
+    cellphone: map['phone']?.toString() ?? '',
     email: map['email']?.toString(),
     createAt: DateTime.tryParse(map['create_at'] ?? ''),
     writeAt: DateTime.tryParse(map['write_at'] ?? ''),
   );
 
   const Customer({
-    required this.id,
-    required this.name,
-    required this.cellphone,
+    this.id = 0,
+    this.name = '',
+    this.cellphone = '',
     this.email,
     this.createAt,
     this.writeAt,
@@ -31,11 +31,29 @@ class Customer extends Equatable {
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = {};
     data['name'] = name;
-    data['cellphone'] = cellphone;
+    data['phone'] = cellphone;
     data['email'] = email;
     data['create_at'] = createAt?.toIso8601String();
     data['write_at'] = writeAt?.toIso8601String();
     return data;
+  }
+
+  Customer copyWith({
+    int? id,
+    String? name,
+    String? cellphone,
+    String? email,
+    DateTime? createAt,
+    DateTime? writeAt,
+  }) {
+    return Customer(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      cellphone: cellphone ?? this.cellphone,
+      email: email ?? this.email,
+      createAt: createAt ?? this.createAt,
+      writeAt: writeAt ?? this.writeAt,
+    );
   }
 
   static String get tableName => 'customer';

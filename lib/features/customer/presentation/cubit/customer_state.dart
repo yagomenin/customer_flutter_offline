@@ -37,11 +37,55 @@ class CustomerErrorState extends CustomerState {
   List<Object?> get props => [message];
 }
 
-class CustomerFortState extends CustomerState {
-  final Customer? customer;
+class CustomerFormState extends CustomerState {
+  final Customer customer;
+  final bool isEditing;
 
-  const CustomerFortState(this.customer);
+  const CustomerFormState({required this.customer, required this.isEditing});
+
+  CustomerFormState copyWith({Customer? customer, bool? isEditing}) {
+    return CustomerFormState(
+      customer: customer ?? this.customer,
+      isEditing: isEditing ?? this.isEditing,
+    );
+  }
 
   @override
   List<Object?> get props => [customer];
+}
+
+class CustomerSaveSuccessState extends CustomerState {
+  final String message;
+
+  const CustomerSaveSuccessState({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class CustomerSaveErrorState extends CustomerState {
+  final String message;
+
+  const CustomerSaveErrorState({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class CustomerDeleteSuccessState extends CustomerState {
+  final String message;
+
+  const CustomerDeleteSuccessState({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class CustomerDeleteErrorState extends CustomerState {
+  final String message;
+
+  const CustomerDeleteErrorState({required this.message});
+
+  @override
+  List<Object?> get props => [message];
 }
