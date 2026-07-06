@@ -21,12 +21,11 @@ class CustomerLoadingState extends CustomerState {}
 
 class CustomerSuccessState extends CustomerState {
   final List<Customer> customers;
-  final CustomerSuccessStatus status;
 
-  const CustomerSuccessState({required this.customers, required this.status});
+  const CustomerSuccessState({required this.customers});
 
   @override
-  List<Object?> get props => [customers, status];
+  List<Object?> get props => [customers];
 }
 
 class CustomerErrorState extends CustomerState {
@@ -38,4 +37,11 @@ class CustomerErrorState extends CustomerState {
   List<Object?> get props => [message];
 }
 
-enum CustomerSuccessStatus { initial, success }
+class CustomerFortState extends CustomerState {
+  final Customer? customer;
+
+  const CustomerFortState(this.customer);
+
+  @override
+  List<Object?> get props => [customer];
+}

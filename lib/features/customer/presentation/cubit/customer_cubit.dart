@@ -21,12 +21,7 @@ class CustomerCubit extends Cubit<CustomerState> {
       },
       (customers) {
         if (customers.isNotEmpty) {
-          emit(
-            CustomerSuccessState(
-              customers: customers,
-              status: CustomerSuccessStatus.success,
-            ),
-          );
+          emit(CustomerSuccessState(customers: customers));
         } else {
           emit(CustomerInitialState(message: CustomerString.anyCustomerfound));
         }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppRoutes {
   static const String splash = '/splash';
   static const String customer = '/customer';
+  static const String customerForm = '/customer/form';
 }
 
 extension NavigationExtensions on BuildContext {
