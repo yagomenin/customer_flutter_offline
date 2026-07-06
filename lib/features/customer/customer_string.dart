@@ -5,8 +5,7 @@ class CustomerString {
   static const String createAt = 'Criado em:';
   static const String edit = 'EDITAR';
   static const String delete = 'DELETAR';
-  static const String searchByNameCpf =
-      'Pesquise pelo nome ou CPF do cliente ... ';
+  static const String searchByName = 'Pesquise pelo nome do cliente ... ';
   static const String createCustomer = 'Criar cliente';
   static const String typeCustomerName = 'Digite o nome do cliente';
   static const String typeCustomerPhone =

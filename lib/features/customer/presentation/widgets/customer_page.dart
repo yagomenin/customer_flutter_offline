@@ -91,7 +91,7 @@ class _CustomerPage extends State<CustomerPage> {
                       TextField(
                         controller: _searchController,
                         decoration: InputDecoration(
-                          hintText: CustomerString.searchByNameCpf,
+                          hintText: CustomerString.searchByName,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(Space.md - 2),

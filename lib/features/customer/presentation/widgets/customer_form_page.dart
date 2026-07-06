@@ -1,4 +1,5 @@
 import 'package:customer_flutter_offline/core/styles/space.dart';
+import 'package:customer_flutter_offline/core/utils/phone_formatter.dart';
 import 'package:customer_flutter_offline/core/widgets/custom_app_bar.dart';
 import 'package:customer_flutter_offline/core/widgets/custom_button.dart';
 import 'package:customer_flutter_offline/core/widgets/custom_form_field.dart';
@@ -11,6 +12,7 @@ import 'package:customer_flutter_offline/features/customer/presentation/widgets/
 import 'package:customer_flutter_offline/injection/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class CustomerFormPage extends StatefulWidget {
   const CustomerFormPage({required this.arguments, super.key});
@@ -27,6 +29,7 @@ class _CustomerFormPage extends State<CustomerFormPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final MaskTextInputFormatter _phoneFormatter = formatter();
 
   @override
   void initState() {
@@ -34,7 +37,9 @@ class _CustomerFormPage extends State<CustomerFormPage> {
     cubit.loadForm(customer: widget.arguments.customer);
     if (widget.arguments.customer != null) {
       _nameController.text = widget.arguments.customer!.name;
-      _phoneController.text = widget.arguments.customer!.cellphone;
+      _phoneController.text = _phoneFormatter.maskText(
+        widget.arguments.customer!.cellphone,
+      );
       _emailController.text = widget.arguments.customer!.email ?? '';
     }
     super.initState();
@@ -78,8 +83,11 @@ class _CustomerFormPage extends State<CustomerFormPage> {
                 CustomFormField(
                   hintText: CustomerString.typeCustomerPhone,
                   onChanged: (value) {},
-                  validator: CustomerValidator.validatePhone,
+                  validator: (context) => CustomerValidator.validatePhone(
+                    _phoneFormatter.getUnmaskedText(),
+                  ),
                   controller: _phoneController,
+                  inputFormatters: [_phoneFormatter],
                 ),
                 const SizedBox(height: Space.md),
                 CustomLabelTextForm(label: CustomerString.email),
@@ -99,7 +107,7 @@ class _CustomerFormPage extends State<CustomerFormPage> {
                         widget.arguments.cubit.saveCustomer(
                           state: cubit.state as CustomerFormState,
                           name: _nameController.text,
-                          phone: _phoneController.text,
+                          phone: _phoneFormatter.getUnmaskedText(),
                           email: _emailController.text,
                         );
                         Navigator.pop(context);
